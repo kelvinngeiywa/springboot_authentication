@@ -1,0 +1,24 @@
+### GET request to example server
+GET http://localhost:8080/users
+Authorization: Basic kelvin4@gmail.com Kelvin@123
+
+###
+GET http://localhost:8080/users/lgn/kelvin@gmail.com
+###
+POST http://localhost:8080/users/login
+Content-Type: application/json
+
+{
+  "email": "kelvin4@gmail.com",
+  "password": "Kelvin@13"
+}
+###
+
+POST http://localhost:8080/users/register
+Content-Type: application/json
+
+{
+  "name": "Kelvin",
+  "email": "kelvin1@gmail.com",
+  "password": "Kelvin@123"
+}
