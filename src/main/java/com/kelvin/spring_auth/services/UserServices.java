@@ -62,7 +62,7 @@ public class UserServices {
 
     public RegisterUserDto getUserById(UUID id){
         return userRepository.findById(id).map(u->
-                new RegisterUserDto(u.getName(),u.getEmail(),u.getPassword()))
+                        new RegisterUserDto(u.getName(),u.getEmail(),u.getPassword()))
                 .orElseThrow(()->new RuntimeException("User with id "+id+" not found"))
                 ;
     }

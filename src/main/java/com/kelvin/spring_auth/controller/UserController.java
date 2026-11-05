@@ -2,12 +2,16 @@ package com.kelvin.spring_auth.controller;
 
 import com.kelvin.spring_auth.entities.User;
 import com.kelvin.spring_auth.entities.dtos.LoginRequestDto;
+import com.kelvin.spring_auth.entities.dtos.LoginResponseDto;
 import com.kelvin.spring_auth.entities.dtos.RegisterUserDto;
+import com.kelvin.spring_auth.services.JwtServices;
 import com.kelvin.spring_auth.services.UserServices;
+import io.jsonwebtoken.Jwt;
 import jakarta.validation.Valid;
 import org.apache.coyote.Response;
 import org.apache.juli.logging.Log;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,13 +22,15 @@ import java.util.UUID;
 @RequestMapping("users")
 public class UserController {
     private final UserServices userServices;
+    private final JwtServices jwtServices;
 
-    public UserController(UserServices userServices){
+    public UserController(UserServices userServices, JwtServices jwtServices){
         this.userServices=userServices;
+        this.jwtServices=jwtServices;
 
     }
 
-    @PostMapping("register")
+    @PostMapping("/register")
     public ResponseEntity<User> addNewUser(@Valid @RequestBody RegisterUserDto newUserDto){
         User newUser= userServices.createNewUser(newUserDto);
         return ResponseEntity.ok(newUser);
@@ -32,9 +38,15 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<User> loginUser(@RequestBody LoginRequestDto loginRequestDto){
+    public ResponseEntity<LoginResponseDto> loginUser(@RequestBody LoginRequestDto loginRequestDto){
         User loggedUser= userServices.Login(loginRequestDto);
-        return ResponseEntity.ok(loggedUser);
+
+        String jwtToken=jwtServices.generateToken(loggedUser); //casting
+        LoginResponseDto loginResponseDto=new LoginResponseDto();
+        loginResponseDto.setToken(jwtToken);
+        loginResponseDto.setExpiresIn(jwtServices.getExpirationTime());
+
+        return ResponseEntity.ok(loginResponseDto);
     }
 
 
@@ -45,8 +57,8 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
-    @GetMapping("{id}")
-    public ResponseEntity<RegisterUserDto> getUserById(UUID id){
+    @GetMapping("/{id}")
+    public ResponseEntity<RegisterUserDto> getUserById(@PathVariable UUID id){
         RegisterUserDto findUser= userServices.getUserById(id);
         return ResponseEntity.ok(findUser);
     }

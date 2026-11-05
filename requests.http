@@ -3,14 +3,22 @@ GET http://localhost:8080/users
 Authorization: Basic kelvin4@gmail.com Kelvin@123
 
 ###
+GET http://localhost:8080/users
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrZWx2aW4xMUBnbWFpbC5jb20iLCJpYXQiOjE3OTM5MDA5OTcsImV4cCI6MTc5MzkwNDU5N30.UAPcMkIIS2JAhkLrEjbErLUWiWfsJONfUKy08duGe5s
+
+###
+GET http://localhost:8080/users/4f5af9fb-fe57-4481-94db-3fdb6c6ca13d
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrZWx2aW4xMUBnbWFpbC5jb20iLCJpYXQiOjE3OTM5MDA5OTcsImV4cCI6MTc5MzkwNDU5N30.UAPcMkIIS2JAhkLrEjbErLUWiWfsJONfUKy08duGe5s
+
+###
 GET http://localhost:8080/users/lgn/kelvin@gmail.com
 ###
 POST http://localhost:8080/users/login
 Content-Type: application/json
 
 {
-  "email": "kelvin4@gmail.com",
-  "password": "Kelvin@13"
+  "email": "kelvin11@gmail.com",
+  "password": "Kelvin@123"
 }
 ###
 

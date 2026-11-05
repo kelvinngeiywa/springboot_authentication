@@ -12,16 +12,20 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
     private final AuthenticationProvider authenticationProvider;
     private final TokenAuthenticationEntryPoint tokenAuthenticationEntryPoint;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    public SecurityConfiguration(AuthenticationProvider authenticationProvider, TokenAuthenticationEntryPoint entryPoint){
+    public SecurityConfiguration(AuthenticationProvider authenticationProvider, TokenAuthenticationEntryPoint entryPoint,
+                                 JwtAuthenticationFilter jwtAuthenticationFilter){
         this.authenticationProvider=authenticationProvider;
         this.tokenAuthenticationEntryPoint=entryPoint;
+        this.jwtAuthenticationFilter=jwtAuthenticationFilter;
 
     }
 
@@ -34,11 +38,12 @@ public class SecurityConfiguration {
                                 .permitAll().anyRequest().authenticated())
                 .httpBasic(b->b.authenticationEntryPoint(tokenAuthenticationEntryPoint))
 //                .httpBasic(Customizer.withDefaults())
-//                .sessionManagement(s->s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .sessionManagement(s->s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 //                .exceptionHandling(e->e.authenticationEntryPoint(
 //                        new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)
 //                ))
                 .authenticationProvider(authenticationProvider)
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(e->e.authenticationEntryPoint(tokenAuthenticationEntryPoint))
                 .build();
     }
