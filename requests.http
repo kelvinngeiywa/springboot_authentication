@@ -7,6 +7,12 @@ GET http://localhost:8080/users
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrZWx2aW4xMUBnbWFpbC5jb20iLCJpYXQiOjE3OTM5MDA5OTcsImV4cCI6MTc5MzkwNDU5N30.UAPcMkIIS2JAhkLrEjbErLUWiWfsJONfUKy08duGe5s
 
 ###
+
+GET http://localhost:8080/users/me
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrZWx2aW4xMUBnbWFpbC5jb20iLCJpYXQiOjE3OTM5MDI1ODQsImV4cCI6MTc5MzkwNjE4NH0.oMY2vSjIHbyVvnDNKuQ4W_S_cbCFm00XSJk8k5wvr0w
+
+
+###
 GET http://localhost:8080/users/4f5af9fb-fe57-4481-94db-3fdb6c6ca13d
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrZWx2aW4xMUBnbWFpbC5jb20iLCJpYXQiOjE3OTM5MDA5OTcsImV4cCI6MTc5MzkwNDU5N30.UAPcMkIIS2JAhkLrEjbErLUWiWfsJONfUKy08duGe5s
 

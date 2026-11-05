@@ -11,6 +11,8 @@ import jakarta.validation.Valid;
 import org.apache.coyote.Response;
 import org.apache.juli.logging.Log;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
@@ -61,5 +63,17 @@ public class UserController {
     public ResponseEntity<RegisterUserDto> getUserById(@PathVariable UUID id){
         RegisterUserDto findUser= userServices.getUserById(id);
         return ResponseEntity.ok(findUser);
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<User> authenticatedUser(){
+
+        Authentication authentication= SecurityContextHolder.getContext().getAuthentication();
+        System.out.println(authentication + " / " + (authentication == null ? null : authentication.getPrincipal()));
+        User currentuser= (User)authentication.getPrincipal();
+        System.out.println(currentuser.getEmail());
+
+        return ResponseEntity.ok(currentuser);
+
     }
 }
