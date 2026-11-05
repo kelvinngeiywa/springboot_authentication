@@ -1,8 +1,11 @@
 package com.kelvin.spring_auth.services;
 
+import com.kelvin.spring_auth.entities.Role;
+import com.kelvin.spring_auth.entities.RoleEnum;
 import com.kelvin.spring_auth.entities.User;
 import com.kelvin.spring_auth.entities.dtos.LoginRequestDto;
 import com.kelvin.spring_auth.entities.dtos.RegisterUserDto;
+import com.kelvin.spring_auth.repository.RoleRepository;
 import com.kelvin.spring_auth.repository.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,15 +21,17 @@ import java.util.UUID;
 @Service
 public class UserServices {
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
 
 
     public UserServices(UserRepository userRepository,PasswordEncoder passwordEncoder,
-    AuthenticationManager authenticationManager){
+    AuthenticationManager authenticationManager,RoleRepository roleRepository){
         this.userRepository=userRepository;
         this.passwordEncoder=passwordEncoder;
         this.authenticationManager=authenticationManager;
+        this.roleRepository=roleRepository;
 
 
     }
@@ -35,10 +40,16 @@ public class UserServices {
         if(userRepository.existsByEmail(newUser.getEmail())){
             throw new ResponseStatusException(HttpStatus.CONFLICT,"Email exists");
         }
+        Optional<Role> optionalRole= roleRepository.findRoleByName(RoleEnum.USER);
+        if(optionalRole.isEmpty()){
+            return null;
+        }
+
         User user= new User();
         user.setName(newUser.getName());
         user.setEmail(newUser.getEmail());
         user.setPassword(passwordEncoder.encode(newUser.getPassword()));
+        user.setRole(optionalRole.get());
 
         return userRepository.save(user);
     }
@@ -77,6 +88,21 @@ public class UserServices {
         }
         System.out.println(user.getEmail());
         return user;
+    }
+
+    public User createAdministrator(RegisterUserDto registerUserDto){
+        Optional<Role> optionalRole=roleRepository.findRoleByName(RoleEnum.ADMIN);
+
+        if(optionalRole.isEmpty()){
+            return null;
+        }
+        var user= new User();
+        user.setName(registerUserDto.getName());
+        user.setEmail(registerUserDto.getEmail());
+        user.setPassword(passwordEncoder.encode(registerUserDto.getPassword()));
+        user.setRole(optionalRole.get());
+
+        return userRepository.save(user);
     }
 
 //    public User findByEmail(String email){

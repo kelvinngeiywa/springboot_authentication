@@ -4,7 +4,7 @@ Authorization: Basic kelvin4@gmail.com Kelvin@123
 
 ###
 GET http://localhost:8080/users
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrZWx2aW4xMUBnbWFpbC5jb20iLCJpYXQiOjE3OTM5MDA5OTcsImV4cCI6MTc5MzkwNDU5N30.UAPcMkIIS2JAhkLrEjbErLUWiWfsJONfUKy08duGe5s
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdXBlci5hZG1pbkBlbWFpbC5jb20iLCJpYXQiOjE3OTM5MTA0MjksImV4cCI6MTc5MzkxNDAyOX0.1W7jdiWtoa-nj97Urh4j4PjJ2OZUyWMuFNmab_GXnzQ
 
 ###
 
@@ -23,8 +23,8 @@ POST http://localhost:8080/users/login
 Content-Type: application/json
 
 {
-  "email": "kelvin11@gmail.com",
-  "password": "Kelvin@123"
+  "email": "super.admin@email.com",
+  "password": "Superadmin@123"
 }
 ###
 
@@ -33,6 +33,17 @@ Content-Type: application/json
 
 {
   "name": "Kelvin",
-  "email": "kelvin1@gmail.com",
+  "email": "kelvin@gmail.com",
+  "password": "Kelvin@123"
+}
+
+###
+POST http://localhost:8080/admins
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdXBlci5hZG1pbkBlbWFpbC5jb20iLCJpYXQiOjE3OTM5MTA0MjksImV4cCI6MTc5MzkxNDAyOX0.1W7jdiWtoa-nj97Urh4j4PjJ2OZUyWMuFNmab_GXnzQ
+
+{
+  "name": "Kelvin",
+  "email": "kelvin@gmail.com",
   "password": "Kelvin@123"
 }

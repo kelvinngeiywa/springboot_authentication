@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
@@ -32,19 +33,25 @@ public class User implements UserDetails{
     )
     private String password;
 
+    @ManyToOne(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "role_id",referencedColumnName = "id",nullable = false)
+    private Role role;
+
     public User(){
 
     }
-    public User(UUID id,String name,String email,String password) {
+    public User(UUID id,String name,String email,String password,Role role) {
         this.id=id;
         this.name=name;
         this.email=email;
         this.password=password;
+        this.role=role;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities(){
-        return List.of();
+        SimpleGrantedAuthority authority=new SimpleGrantedAuthority("ROLE_" + role.getName().toString());
+        return List.of(authority);
     }
 
     @Override
@@ -74,5 +81,14 @@ public class User implements UserDetails{
 
     public void setPassword(String password){
         this.password=password;
+    }
+
+    public Role getRole(){
+        return this.role;
+    }
+
+    public User setRole(Role role){
+        this.role=role;
+        return this;
     }
 }
